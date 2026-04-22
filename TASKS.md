@@ -13,9 +13,9 @@
   - Collision detection
   - Control input handling (Arrow keys / WASD)
 - [x] Copy sketch.js to BUILD/ folder for P5 web editor
- - [x] Normalize asset filenames (lowercase, hyphens) and update references
- - [x] Fix platform-event collision handling to skip ground obstacles while on platform
- - [x] Run `node --check sketch.js` and verified no syntax errors
+
+- [x] Normalize asset references in `sketch.js` (use lowercase/hyphens and `dino/` folder) and adjust platform collision handling
+- [x] Run `node --check sketch.js` to verify syntax
 
 ## 🔄 In Progress
 (None currently)

@@ -13,7 +13,7 @@ let maxSpeed = 6.5;
 // Platform event variables
 let platformEventActive = false;
 let platformEventTimer = 0;
-let platformEventDuration = 180; // 3 seconds at 60fps
+let platformEventDuration = 180; // 3 seconds at 60fps (default, may be randomized on start)
 let platformY = 300; // Raised platform height
 let platformWidth = 200;
 let platformX = 0;
@@ -21,18 +21,16 @@ let platformX = 0;
 // Assets
 let skyImg, groundImg;
 let dinoRun1, dinoRun2, dinoCrouch1, dinoCrouch2, dinoIdle;
-let dinoWideEye;
 
 function preload() {
   // Load images
-  skyImg = loadImage('Sky.jpg');
+  skyImg = loadImage('sky.jpg');
   groundImg = loadImage('desert-ground.png');
-  dinoRun1 = loadImage('dino-run-1.png');
-  dinoRun2 = loadImage('dino-run-2.png');
-  dinoCrouch1 = loadImage('dino-crouch-1.png');
-  dinoCrouch2 = loadImage('dino-crouch-2.png');
-  dinoIdle = loadImage('dino-idle.png');
-  dinoWideEye = loadImage('dino-wide-eye.png');
+  dinoRun1 = loadImage('dino/run-1.png');
+  dinoRun2 = loadImage('dino/run-2.png');
+  dinoCrouch1 = loadImage('dino/crouch-1.png');
+  dinoCrouch2 = loadImage('dino/crouch-2.png');
+  dinoIdle = loadImage('dino/idle.png');
 }
 
 function setup() {
@@ -91,16 +89,21 @@ function updateGame() {
     updatePlatformEvent();
   }
 
-  // Check collisions (skip ground obstacles when player is on platform)
+  // Check collisions
   for (let obs of obstacles) {
-    if (platformEventActive && player.collidesWithPlatform()) {
-      if (obs.type !== 'flyingDino' && obs.y >= platformY) {
-        continue; // player is on platform; ignore ground obstacles below platform
-      }
+    // If platform event active and player is safely on the platform,
+    // ignore collisions with ground obstacles that are under the platform.
+    if (platformEventActive && player.collidesWithPlatform() && obs.y >= platformY) {
+      continue;
     }
     if (player.collidesWith(obs)) {
       gameState = 'gameOver';
     }
+  }
+
+  // Check platform collision if active
+  if (platformEventActive && player.collidesWithPlatform()) {
+    // Player is on platform, no collision
   }
 }
 
@@ -186,6 +189,8 @@ function startPlatformEvent() {
   platformEventActive = true;
   platformEventTimer = 0;
   platformX = width + 100;
+  // Randomize event duration between ~3 to 5 seconds (180-300 frames at 60fps)
+  platformEventDuration = Math.floor(random(180, 301));
   // Increase ground obstacles
   for (let i = 0; i < 5; i++) {
     obstacles.push(new Obstacle('smallCactus', width + i * 100));
@@ -227,43 +232,28 @@ class Player {
         this.velocityY = 0;
       }
     }
-    this.updateAnimation();
-  }
 
-  updateAnimation() {
-    // Advance frame timer
+    // Animation
     this.animationTimer++;
     if (this.animationTimer > 10) {
       this.animationFrame = (this.animationFrame + 1) % 2;
       this.animationTimer = 0;
     }
-
-    // Game over => wide-eye
-    if (gameState === 'gameOver') {
-      this.currentSprite = dinoWideEye;
-      return;
-    }
-
-    // Jumping uses idle sprite
-    if (this.isJumping) {
-      this.currentSprite = dinoIdle;
-      return;
-    }
-
-    // Ducking cycles crouch sprites
-    if (this.isDucking) {
-      this.currentSprite = this.animationFrame === 0 ? dinoCrouch1 : dinoCrouch2;
-      return;
-    }
-
-    // Default: running animation cycles
-    this.currentSprite = this.animationFrame === 0 ? dinoRun1 : dinoRun2;
   }
 
   render() {
-    // Adjust height when ducking
-    if (this.isDucking) this.height = 30; else this.height = 40;
-    image(this.currentSprite, this.x, this.y, this.width, this.height);
+    let img;
+    if (this.isDucking) {
+      img = this.animationFrame === 0 ? dinoCrouch1 : dinoCrouch2;
+      this.height = 30; // Crouched height
+    } else if (this.isJumping) {
+      img = dinoIdle;
+      this.height = 40;
+    } else {
+      img = this.animationFrame === 0 ? dinoRun1 : dinoRun2;
+      this.height = 40;
+    }
+    image(img, this.x, this.y, this.width, this.height);
   }
 
   jump() {
@@ -313,22 +303,19 @@ class Obstacle {
   constructor(type, x = width) {
     this.type = type;
     this.x = x;
+    this.y = 300;
     this.width = 20;
     this.height = 40;
-
-    // Ground obstacle bottom baseline (matches previous behavior where bottom y ~= 340)
-    const bottomY = 340;
 
     switch (type) {
       case 'smallCactus':
         this.width = 20;
-        this.height = floor(random(30, 50));
-        this.y = bottomY - this.height;
+        this.height = 40;
         break;
       case 'largeCactus':
         this.width = 30;
-        this.height = floor(random(50, 80));
-        this.y = bottomY - this.height;
+        this.height = 60;
+        this.y = 280;
         break;
       case 'flyingDino':
         this.width = 40;

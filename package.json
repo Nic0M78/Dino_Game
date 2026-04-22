@@ -1,0 +1,13 @@
+{
+  "name": "dino-run",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "puppeteer": "^20.0.0"
+  }
+}

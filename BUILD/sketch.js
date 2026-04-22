@@ -13,7 +13,7 @@ let maxSpeed = 6.5;
 // Platform event variables
 let platformEventActive = false;
 let platformEventTimer = 0;
-let platformEventDuration = 180; // 3 seconds at 60fps
+let platformEventDuration = 180; // 3 seconds at 60fps (default, may be randomized on start)
 let platformY = 300; // Raised platform height
 let platformWidth = 200;
 let platformX = 0;
@@ -24,13 +24,13 @@ let dinoRun1, dinoRun2, dinoCrouch1, dinoCrouch2, dinoIdle;
 
 function preload() {
   // Load images
-  skyImg = loadImage('Sky.jpg');
-  groundImg = loadImage('Desert ground.png');
-  dinoRun1 = loadImage('Dino/Dino Run 1.png');
-  dinoRun2 = loadImage('Dino/Dino Run 2.png');
-  dinoCrouch1 = loadImage('Dino/Dino Crouch 1.png');
-  dinoCrouch2 = loadImage('Dino/Dino Crouch 2.png');
-  dinoIdle = loadImage('Dino/Dino Idle.png');
+  skyImg = loadImage('sky.jpg');
+  groundImg = loadImage('desert-ground.png');
+  dinoRun1 = loadImage('dino/run-1.png');
+  dinoRun2 = loadImage('dino/run-2.png');
+  dinoCrouch1 = loadImage('dino/crouch-1.png');
+  dinoCrouch2 = loadImage('dino/crouch-2.png');
+  dinoIdle = loadImage('dino/idle.png');
 }
 
 function setup() {
@@ -91,6 +91,11 @@ function updateGame() {
 
   // Check collisions
   for (let obs of obstacles) {
+    // If platform event active and player is safely on the platform,
+    // ignore collisions with ground obstacles that are under the platform.
+    if (platformEventActive && player.collidesWithPlatform() && obs.y >= platformY) {
+      continue;
+    }
     if (player.collidesWith(obs)) {
       gameState = 'gameOver';
     }
@@ -184,6 +189,8 @@ function startPlatformEvent() {
   platformEventActive = true;
   platformEventTimer = 0;
   platformX = width + 100;
+  // Randomize event duration between ~3 to 5 seconds (180-300 frames at 60fps)
+  platformEventDuration = Math.floor(random(180, 301));
   // Increase ground obstacles
   for (let i = 0; i < 5; i++) {
     obstacles.push(new Obstacle('smallCactus', width + i * 100));

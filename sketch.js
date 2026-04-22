@@ -21,6 +21,7 @@ let platformX = 0;
 // Assets
 let skyImg, groundImg;
 let dinoRun1, dinoRun2, dinoCrouch1, dinoCrouch2, dinoIdle;
+let dinoWideEye;
 
 function preload() {
   // Load images
@@ -31,6 +32,7 @@ function preload() {
   dinoCrouch1 = loadImage('dino/crouch-1.png');
   dinoCrouch2 = loadImage('dino/crouch-2.png');
   dinoIdle = loadImage('dino/idle.png');
+  dinoWideEye = loadImage('dino/wide-eye.png');
 }
 
 function setup() {
@@ -225,28 +227,43 @@ class Player {
         this.velocityY = 0;
       }
     }
+    this.updateAnimation();
+  }
 
-    // Animation
+  updateAnimation() {
+    // Advance frame timer
     this.animationTimer++;
     if (this.animationTimer > 10) {
       this.animationFrame = (this.animationFrame + 1) % 2;
       this.animationTimer = 0;
     }
+
+    // Game over => wide-eye
+    if (gameState === 'gameOver') {
+      this.currentSprite = dinoWideEye;
+      return;
+    }
+
+    // Jumping uses idle sprite
+    if (this.isJumping) {
+      this.currentSprite = dinoIdle;
+      return;
+    }
+
+    // Ducking cycles crouch sprites
+    if (this.isDucking) {
+      this.currentSprite = this.animationFrame === 0 ? dinoCrouch1 : dinoCrouch2;
+      return;
+    }
+
+    // Default: running animation cycles
+    this.currentSprite = this.animationFrame === 0 ? dinoRun1 : dinoRun2;
   }
 
   render() {
-    let img;
-    if (this.isDucking) {
-      img = this.animationFrame === 0 ? dinoCrouch1 : dinoCrouch2;
-      this.height = 30; // Crouched height
-    } else if (this.isJumping) {
-      img = dinoIdle;
-      this.height = 40;
-    } else {
-      img = this.animationFrame === 0 ? dinoRun1 : dinoRun2;
-      this.height = 40;
-    }
-    image(img, this.x, this.y, this.width, this.height);
+    // Adjust height when ducking
+    if (this.isDucking) this.height = 30; else this.height = 40;
+    image(this.currentSprite, this.x, this.y, this.width, this.height);
   }
 
   jump() {

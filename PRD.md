@@ -1,9 +1,9 @@
-# PRD.md — Dino Run (P5.js)
+# PRD — Dino Run (P5.js)
+
+This is the canonical project requirements document for Dino Run. (Renamed from the original file to avoid spaces and punctuation in filenames; agents should reference this `PRD.md`.)
 
 ## 1. Core Concept
 Dino Run is an endless runner game inspired by the classic Google Chrome offline dinosaur game. The player controls a dinosaur that must continuously avoid incoming obstacles. The game progresses indefinitely, with increasing difficulty over time. Players earn points by successfully jumping over or ducking under enemies.
-
----
 
 ## 2. Core Entities
 
@@ -17,8 +17,6 @@ Dino Run is an endless runner game inspired by the classic Google Chrome offline
 
 - **Environment**
   - Ground (scrolling to simulate movement)
-
----
 
 ## 3. Overall Mechanics
 
@@ -42,8 +40,6 @@ Dino Run is an endless runner game inspired by the classic Google Chrome offline
 ### Game Over
 - Collision with any obstacle results in immediate game over
 
----
-
 ## 4. User Interaction
 
 ### Controls
@@ -57,8 +53,6 @@ Dino Run is an endless runner game inspired by the classic Google Chrome offline
 
 - **Restart**
   - Press **R** to restart after losing
-
----
 
 ## 5. Visual Design
 
@@ -83,16 +77,12 @@ Dino Run is an endless runner game inspired by the classic Google Chrome offline
   - Scrolling ground using image tiling
   - Moving obstacles
 
----
-
 ## 6. Constraints / What Should NOT Happen
 
 - The dinosaur must NOT pass through obstacles
 - Collisions must be accurately detected
 - No overlapping or glitching through enemies
 - Speed must NOT exceed the defined cap (6.5)
-
----
 
 ## 7. Technical Notes (P5.js)
 
@@ -101,12 +91,10 @@ Dino Run is an endless runner game inspired by the classic Google Chrome offline
   - Player
   - Obstacles
   - Environment
-- Implement collision detection using bounding boxes
+- Implement collision detection using axis-aligned bounding boxes (AABB)
 - Maintain game state:
   - Playing
   - Game Over
-
----
 
 ## 8. Special Gameplay Event: Platform Sequence
 
@@ -141,5 +129,19 @@ Introduce a random gameplay event where the player must jump onto a raised platf
 - Platform must be clearly visible and reachable
 - Collision detection must properly support platform landing
 
+## 9. Build & Launch (Agent-friendly)
+
+- Purpose: The `BUILD/` folder contains the final copy of the sketch intended for the P5.js web editor. Agents and CI should treat `BUILD/` as the deployable output.
+- Build step (manual): After edits to `sketch.js`, run `cp sketch.js BUILD/sketch.js` to update the build artifact.
+- Launch (P5.js web editor): Open https://editor.p5js.org/, create a new sketch, paste `BUILD/sketch.js` into the editor, and upload required assets (Sky.jpg, Desert ground.png, images in `Dino/`). Run and test.
+- Automation note: Agents should ensure filenames have no spaces and use consistent casing when copying/uploading assets (e.g., `Sky.jpg` → `sky.jpg` if the web editor requires lowercase). Avoid spaces in filenames.
+
+## 10. Agent Guidance / Conventions
+
+- Filenames: avoid spaces, parentheses, or special characters in filenames. Use `PRD.md` rather than `dino_run_prd (1).md`.
+- Asset paths: keep asset references relative and consistent; prefer lowercase filenames and hyphens instead of spaces.
+- Testing: verify in P5 web editor after copying to `BUILD/` and uploading assets.
+
 ---
 
+If anything in this PRD is unclear, ask for clarification before implementing changes that affect mechanics or required assets.

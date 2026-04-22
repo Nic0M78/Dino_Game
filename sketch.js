@@ -25,12 +25,12 @@ let dinoRun1, dinoRun2, dinoCrouch1, dinoCrouch2, dinoIdle;
 function preload() {
   // Load images
   skyImg = loadImage('Sky.jpg');
-  groundImg = loadImage('Desert ground.png');
-  dinoRun1 = loadImage('Dino/Dino Run 1.png');
-  dinoRun2 = loadImage('Dino/Dino Run 2.png');
-  dinoCrouch1 = loadImage('Dino/Dino Crouch 1.png');
-  dinoCrouch2 = loadImage('Dino/Dino Crouch 2.png');
-  dinoIdle = loadImage('Dino/Dino Idle.png');
+  groundImg = loadImage('desert-ground.png');
+  dinoRun1 = loadImage('dino/run-1.png');
+  dinoRun2 = loadImage('dino/run-2.png');
+  dinoCrouch1 = loadImage('dino/crouch-1.png');
+  dinoCrouch2 = loadImage('dino/crouch-2.png');
+  dinoIdle = loadImage('dino/idle.png');
 }
 
 function setup() {
@@ -89,16 +89,16 @@ function updateGame() {
     updatePlatformEvent();
   }
 
-  // Check collisions
+  // Check collisions (skip ground obstacles when player is on platform)
   for (let obs of obstacles) {
+    if (platformEventActive && player.collidesWithPlatform()) {
+      if (obs.type !== 'flyingDino' && obs.y >= platformY) {
+        continue; // player is on platform; ignore ground obstacles below platform
+      }
+    }
     if (player.collidesWith(obs)) {
       gameState = 'gameOver';
     }
-  }
-
-  // Check platform collision if active
-  if (platformEventActive && player.collidesWithPlatform()) {
-    // Player is on platform, no collision
   }
 }
 

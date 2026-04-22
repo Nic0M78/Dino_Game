@@ -6,7 +6,7 @@ Welcome! This document guides you through taking over the Dino Run project. Foll
 
 ## Step 1: Read Project Documentation (5 min)
 
-1. **Review the PRD** → [dino_run_prd (1).md](../dino_run_prd%20(1).md)
+1. **Review the PRD** → [PRD.md](PRD.md)
    - Understand all game mechanics, controls, and requirements
    - Note the Platform Event special rules (Section 8)
 
@@ -27,7 +27,7 @@ Welcome! This document guides you through taking over the Dino Run project. Foll
 
 ## Step 2: Understand the Current Implementation (5 min)
 
-- **Main Game File** → [sketch.js](../sketch.js)
+ - **Main Game File** → [sketch.js](sketch.js)
   - Examine the Player, Obstacle, and Environment classes
   - Review the main draw() and update() loops
   - Study the platform event logic
@@ -96,7 +96,7 @@ Task Workflow:
 2. Pick a task from "📋 To Do"
 3. Mark as in-progress in TASKS.md
 4. Edit sketch.js with changes
-5. Local test/validate syntax with: node -c sketch.js
+5. Local test/validate syntax with: node --check sketch.js
 6. Copy to BUILD/: cp sketch.js BUILD/sketch.js
 7. Test in P5 web editor with assets
 8. Update TASKS.md with result
@@ -107,7 +107,7 @@ Task Workflow:
 
 | File | Purpose |
 |------|---------|
-| `dino_run_prd (1).md` | Requirements - **read this first** |
+| `PRD.md` | Requirements - **read this first** |
 | `ARCHITECTURE.md` | Tech stack & design decisions |
 | `RULES.md` | Agent guidelines & standards |
 | `TASKS.md` | **Update this after every task** |
@@ -120,10 +120,10 @@ Task Workflow:
 ## Questions?
 
 If unclear about requirements, refer back to:
-- **Game Mechanics** → dino_run_prd (1).md Section 3
-- **Controls** → dino_run_prd (1).md Section 4
-- **Technical Details** → dino_run_prd (1).md Section 7
-- **Platform Event** → dino_run_prd (1).md Section 8
+- **Game Mechanics** → [PRD.md](PRD.md) Section 3
+- **Controls** → [PRD.md](PRD.md) Section 4
+- **Technical Details** → [PRD.md](PRD.md) Section 7
+- **Platform Event** → [PRD.md](PRD.md) Section 8
 
 ---
 

@@ -313,19 +313,22 @@ class Obstacle {
   constructor(type, x = width) {
     this.type = type;
     this.x = x;
-    this.y = 300;
     this.width = 20;
     this.height = 40;
+
+    // Ground obstacle bottom baseline (matches previous behavior where bottom y ~= 340)
+    const bottomY = 340;
 
     switch (type) {
       case 'smallCactus':
         this.width = 20;
-        this.height = 40;
+        this.height = floor(random(30, 50));
+        this.y = bottomY - this.height;
         break;
       case 'largeCactus':
         this.width = 30;
-        this.height = 60;
-        this.y = 280;
+        this.height = floor(random(50, 80));
+        this.y = bottomY - this.height;
         break;
       case 'flyingDino':
         this.width = 40;

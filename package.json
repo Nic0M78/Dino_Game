@@ -1,11 +1,10 @@
 {
-  "name": "dino-run-tests",
+  "name": "dino-run",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "syntax-check": "node --check sketch.js",
-    "test": "jest --runInBand --color",
-    "lint": "echo \"No linter configured. Add ESLint if desired.\""
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "jest": "^29.0.0",

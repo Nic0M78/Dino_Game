@@ -27,12 +27,12 @@ function preload() {
   // Load images
   skyImg = loadImage('Sky.jpg');
   groundImg = loadImage('desert-ground.png');
-  dinoRun1 = loadImage('dino/run-1.png');
-  dinoRun2 = loadImage('dino/run-2.png');
-  dinoCrouch1 = loadImage('dino/crouch-1.png');
-  dinoCrouch2 = loadImage('dino/crouch-2.png');
-  dinoIdle = loadImage('dino/idle.png');
-  dinoWideEye = loadImage('dino/wide-eye.png');
+  dinoRun1 = loadImage('dino-run-1.png');
+  dinoRun2 = loadImage('dino-run-2.png');
+  dinoCrouch1 = loadImage('dino-crouch-1.png');
+  dinoCrouch2 = loadImage('dino-crouch-2.png');
+  dinoIdle = loadImage('dino-idle.png');
+  dinoWideEye = loadImage('dino-wide-eye.png');
 }
 
 function setup() {
